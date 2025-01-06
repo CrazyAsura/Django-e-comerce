@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-8">Meu Carrinho</h1>
+    {% if cart.items.count > 0 %}
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse bg-white shadow-sm rounded-lg">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Imagem</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produto</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preço Unitário</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantidade</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for item in cart.items.all %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="h-16 w-16 object-cover rounded">
+                        {% else %}
+                            <div class="h-16 w-16 bg-gray-200 rounded flex items-center justify-center">
+                                <span class="text-gray-500">Sem imagem</span>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ item.product.name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">R$ {{ item.unit_price|floatformat:2 }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <form method="post" action="{% url 'cart_update_quantity' item.id %}" class="flex items-center space-x-2">
+                            {% csrf_token %}
+                            <button type="button" class="bg-gray-200 px-2 py-1 rounded" onclick="decrementQuantity(this)">-</button>
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="99" class="w-16 text-center border rounded px-2 py-1">
+                            <button type="button" class="bg-gray-200 px-2 py-1 rounded" onclick="incrementQuantity(this)">+</button>
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm">Atualizar</button>
+                        </form>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">R$ {{ item.subtotal|floatformat:2 }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <form method="post" action="{% url 'cart_remove_item' item.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg text-sm transition duration-150 ease-in-out">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                    Remover
+                                </span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr class="bg-gray-50">
+                    <td colspan="4" class="px-6 py-4 text-right font-bold">Total:</td>
+                    <td colspan="2" class="px-6 py-4 font-bold">R$ {{ cart_total|floatformat:2 }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="mt-8 flex justify-between items-center">
+        <a href="{% url 'product_list' %}" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-3 px-6 rounded-lg transition duration-150 ease-in-out">
+            Continuar Comprando
+        </a>
+        <a href="{% url 'checkout' %}" class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition duration-150 ease-in-out flex items-center">
+            <span class="mr-2">Finalizar Compra</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+        </a>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <p class="text-gray-600 text-lg mb-6">Seu carrinho está vazio.</p>
+        <a href="{% url 'product_list' %}" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-lg transition duration-150 ease-in-out">
+            Começar a Comprar
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function incrementQuantity(button) {
+    const input = button.previousElementSibling;
+    if (input.value < 99) {
+        input.value = parseInt(input.value) + 1;
+    }
+}
+
+function decrementQuantity(button) {
+    const input = button.nextElementSibling;
+    if (input.value > 1) {
+        input.value = parseInt(input.value) - 1;
+    }
+}
+</script>
+{% endblock %}

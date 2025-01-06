@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Política de Privacidade{% endblock %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-12 animate-fade-in">
+   <h1 class="text-5xl font-extrabold mb-12 text-center text-gray-800 animate-slide-down">Política de Privacidade</h1>
+    
+   <article class="bg-gradient-to-r from-blue-50 to-indigo-50 shadow-lg rounded-2xl p-8 mb-8 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-1 animate-slide-up">
+       <h2 class="text-3xl font-semibold mb-6 text-indigo-700">1. Coleta de Informações</h2>
+       <p class="text-gray-700 mb-4 leading-relaxed">Coletamos informações quando você se registra em nosso site, faz uma compra, inscreve-se em nossa newsletter ou preenche um formulário.</p>
+   </article>
+
+   <article class="bg-gradient-to-r from-purple-50 to-pink-50 shadow-lg rounded-2xl p-8 mb-8 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-1 animate-slide-up">
+       <h2 class="text-3xl font-semibold mb-6 text-purple-700">2. Uso das Informações</h2>
+       <p class="text-gray-700 mb-4 leading-relaxed">Utilizamos as informações que coletamos para personalizar sua experiência e fornecer o melhor conteúdo e ofertas possíveis.</p>
+   </article>
+
+   <article class="bg-gradient-to-r from-green-50 to-teal-50 shadow-lg rounded-2xl p-8 mb-8 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-1 animate-slide-up">
+       <h2 class="text-3xl font-semibold mb-6 text-green-700">3. Proteção de Informações</h2>
+       <p class="text-gray-700 mb-4 leading-relaxed">Implementamos uma variedade de medidas de segurança para manter a segurança de suas informações pessoais.</p>
+   </article>
+
+   <article class="bg-gradient-to-r from-yellow-50 to-orange-50 shadow-lg rounded-2xl p-8 transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-1 animate-slide-up">
+       <h2 class="text-3xl font-semibold mb-6 text-yellow-700">4. Cookies</h2>
+       <p class="text-gray-700 mb-4 leading-relaxed">Utilizamos cookies para melhorar o acesso e personalizar a experiência em nosso site.</p>
+   </article>
+</main>
+
+<style>
+   @keyframes fadeIn {
+       from { opacity: 0; }
+       to { opacity: 1; }
+   }
+   @keyframes slideDown {
+       from { transform: translateY(-50px); opacity: 0; }
+       to { transform: translateY(0); opacity: 1; }
+   }
+   @keyframes slideUp {
+       from { transform: translateY(50px); opacity: 0; }
+       to { transform: translateY(0); opacity: 1; }
+   }
+   .animate-fade-in {
+       animation: fadeIn 1.5s ease-in-out;
+   }
+   .animate-slide-down {
+       animation: slideDown 1s ease-out;
+   }
+   .animate-slide-up {
+       animation: slideUp 1s ease-out;
+       opacity: 0;
+       animation-fill-mode: forwards;
+   }
+</style>
+
+<script>
+   document.addEventListener('DOMContentLoaded', (event) => {
+       const sections = document.querySelectorAll('.animate-slide-up');
+       sections.forEach((section, index) => {
+           section.style.animationDelay = `${index * 0.3}s`;
+       });
+   });
+</script>
+{% endblock %}

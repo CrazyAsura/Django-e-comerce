@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12 max-w-3xl">
+    <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">Finalizar Compra</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <p class="text-lg text-gray-700">Valor Total: <span class="font-bold text-xl text-green-600">R$ {{ cart.total_price|floatformat:2 }}</span></p>
+        <p class="mt-2 text-sm text-gray-600">Você está prestes a finalizar a compra dos itens no seu carrinho. Clique no botão abaixo para pagar com segurança.</p>
+    </div>
+
+    <form action="{% url 'checkout' %}" method="POST" class="space-y-6">
+        {% csrf_token %}
+        
+        <!-- Botão de Pagamento via Stripe -->
+        <div class="flex justify-center">
+            <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="{{ stripe_public_key }}"
+                data-amount="{{ total_amount|floatformat:0 }}"  <!-- O valor em centavos -->
+                data-name="Meu E-commerce"
+                data-description="Pagamento do carrinho"
+                data-image="https://your-site.com/logo.png"
+                data-locale="auto"
+                data-label="Pagar com Cartão">
+            </script>
+        </div>
+    </form>
+
+    <!-- Se necessário, pode-se adicionar um rodapé com

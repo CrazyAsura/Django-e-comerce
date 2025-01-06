@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Store - Categories{% endblock %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+{% block content %}
+<main class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Categorias</h1>
+  <section class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    {% if categories %}
+      {% for category in categories %}
+        <article class="bg-white rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105">
+          {% if category.image %}
+          <img src="{{ MEDIA_URL }}{{ image }}" alt="{{ image }}" class="w-full h-40 object-cover">
+          {% else %}
+          <img src="https://via.placeholder.com/300" alt="{{ products.name }}" class="w-full h-96 object-cover shadow-lg transition-transform duration-500 group-hover:scale-110">
+          {% endif %}
+          <div class="p-4">
+            <h2 class="text-lg font-semibold mb-2 truncate">{{ category.name }}</h2>
+            <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ category.description }}</p>
+            <a href="{% url 'products_by_category' category.id %}" class="w-full inline-block bg-blue-500 text-white text-center px-3 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition duration-300">Ver Produtos</a>
+          </div>
+        </article>
+      {% endfor %}
+    {% else %}
+      <p class="col-span-full text-center text-gray-500">Nenhuma categoria encontrada.</p>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

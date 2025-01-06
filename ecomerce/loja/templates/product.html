@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Loja - Página Inicial{% endblock %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+{% block content %}
+<main class="container mx-auto p-4">
+    <section class="mb-12 animate__animated animate__fadeIn">
+        <section class="bg-gradient-to-r from-blue-500 to-purple-600 p-8 rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold mb-6 text-white">Ofertas em Destaque</h2>
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for product in products %}
+                        {% if product.discount > 25 %}
+                            <div class="swiper-slide">
+                                <a href="{% url 'product_detail' product.id %}" class="bg-white p-6 rounded-2xl shadow-md transform hover:scale-105 transition-transform duration-300 block">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover mb-4 rounded">
+                                    {% else %}
+                                        <img src="https://via.placeholder.com/300" alt="{{ product.name }}" class="w-full h-48 object-cover mb-4 rounded">
+                                    {% endif %}
+                                    <h3 class="text-xl font-semibold text-gray-800">{{ product.name }}</h3>
+                                    <p class="text-2xl font-bold text-red-600">{{ product.discount }}% OFF</p>
+                                    <p class="text-lg text-gray-600"><s>R$ {{ product.price }}</s></p>
+                                    <p class="text-xl font-bold text-green-600">R$ {{ product.price_with_discount }}</p>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </section>
+    </section>
+
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                768: {
+                    slidesPerView: 3,
+                },
+                1024: {
+                    slidesPerView: 4,
+                },
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+        });
+    </script>
+    <section class="mb-12 animate__animated animate__fadeIn animate__delay-1s">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">Produtos em Destaque</h2>
+        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for product in products %}
+                <article class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover mb-4 rounded">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300" alt="{{ product.name }}" class="w-full h-48 object-cover mb-4 rounded">
+                    {% endif %}
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">{{ product.name }}</h3>
+                    <p class="text-gray-600 mb-2">{{ product.descricao|truncatechars:100 }}</p>
+                    {% if product.discount > 0 %}
+                        <p class="text-lg text-gray-600"><s>R$ {{ product.price }}</s></p>
+                        <p class="text-2xl font-bold text-green-600 mb-2">R$ {{ product.price_with_discount }}</p>
+                        <p class="text-sm text-red-600">{{ product.discount }}% OFF</p>
+                    {% else %}
+                        <p class="text-2xl font-bold text-green-600 mb-2">R$ {{ product.price }}</p>
+                    {% endif %}
+                    <p class="text-sm text-gray-500">Estoque: {{ product.stock }}</p>
+                    <p class="text-sm text-gray-500">Categoria: {{ product.category }}</p>
+                    <div class="mt-4">
+                        <a href="{% url 'product_detail' product.id %}" class="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600 transition-colors duration-300">Ver Detalhes</a>
+                    </div>
+                </article>
+            {% empty %}
+                <p class="col-span-full text-center text-gray-500 text-lg">Nenhum produto disponível no momento.</p>
+            {% endfor %}
+        </section>
+    </section>
+</main>
+
+{% endblock %}

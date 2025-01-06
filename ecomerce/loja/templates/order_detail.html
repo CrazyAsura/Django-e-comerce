@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+{% block title %}Meus Pedidos{% endblock %}
+
+{% block content %}
+  <main class="min-h-screen flex items-center justify-center bg-gray-100">
+    <section class="max-w-4xl w-full p-6 bg-white rounded-2xl shadow-lg border border-gray-300">
+      <h2 class="text-2xl font-bold mb-6">Meus Pedidos</h2>
+      
+      <div class="space-y-6">
+        {% if orders %}
+          {% for order in orders %}
+            <div class="p-4 border rounded-lg bg-gray-50">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="font-semibold text-lg">Pedido #{{ order.id }}</h3>
+                <span class="text-sm text-gray-500">{{ order.created_at|date:"d/m/Y H:i" }}</span>
+              </div>
+              <div class="mb-4">
+                <p class="text-gray-600"><strong>Status:</strong> {{ order.get_status_display }}</p>
+                <p class="text-gray-600"><strong>Total:</strong> R$ {{ order.total_value }}</p>
+                <p class="text-gray-600"><strong>Cashback:</strong> R$ {{ order.cashback }}</p>
+              </div>
+              <h4 class="font-semibold text-base mb-2">Itens:</h4>
+              <ul class="space-y-2">
+                {% for item in order.items.all %}
+                  <li class="flex justify-between">
+                    <span>{{ item.product.name }} ({{ item.quantity }}x)</span>
+                    <span>R$ {{ item.subtotal }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+              <div class="mt-4 flex justify-end">
+                <a href="{% url 'order_detail' order.id %}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                  Ver Detalhes
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="text-center py-8">
+            <p class="text-gray-600 mb-4">Você ainda não fez nenhum pedido.</p>
+            <a href="{% url 'produto' %}" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+              Começar a Comprar
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+{% endblock %}

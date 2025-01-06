@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Loja - Categorias{% endblock %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+{% block content %}
+<main class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Categorias</h1>
+  <section class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    {% for product in products %}
+    <article class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
+        {% if product.image %}
+            <img src="{{ product.image }}" alt="{{ product.name }}" class="w-full h-48 object-cover mb-4 rounded">
+        {% else %}
+            <img src="https://via.placeholder.com/300" alt="{{ product.name }}" class="w-full h-48 object-cover mb-4 rounded">
+        {% endif %}
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">{{ product.name }}</h3>
+        <p class="text-gray-600 mb-2">{{ product.descricao|truncatechars:100 }}</p>
+        {% if product.desconto > 0 %}
+            <p class="text-lg text-gray-600"><s>R$ {{ product.price }}</s></p>
+            <p class="text-2xl font-bold text-green-600 mb-2">R$ {{ product.price_with_discount }}</p>
+            <p class="text-sm text-red-600">{{ product.desconto }}% OFF</p>
+        {% else %}
+            <p class="text-2xl font-bold text-green-600 mb-2">R$ {{ product.price }}</p>
+        {% endif %}
+        <p class="text-sm text-gray-500">Estoque: {{ product.stock }}</p>
+        <p class="text-sm text-gray-500">Categoria: {{ product.category }}</p>
+        <article class="mt-4">
+            <a href="{% url 'product_detail' product.id %}" class="bg-blue-500 text-white px-4 py-2 rounded-2xl hover:bg-blue-600 transition-colors duration-300">Ver Detalhes</a>
+        </article>
+    </article>
+{% empty %}
+    <p class="col-span-full text-center text-gray-500 text-lg">Nenhum produto disponível no momento.</p>
+{% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,142 @@
+      {% extends 'base.html' %}
+      
+      {% block title %}Loja - Detalhe dos Produtos{% endblock %}
+
+      {% block content %}
+      <main class="px-4 md:px-24 py-12 bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+          <section class="max-w-6xl mx-auto p-10 bg-white shadow-2xl rounded-3xl transition-all duration-300 hover:shadow-3xl backdrop-blur-sm">
+              <section class="grid grid-cols-1 md:grid-cols-2 gap-20">
+                  <article class="space-y-8">
+                      <div class="relative group overflow-hidden rounded-2xl">
+                        {% if products.image %}
+                        <img src="{{ products.image.url }}" alt="{{ products.name }}" class="w-full h-96 object-cover shadow-lg transition-transform duration-500 group-hover:scale-110">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300" alt="{{ products.name }}" class="w-full h-96 object-cover shadow-lg transition-transform duration-500 group-hover:scale-110">
+                        {% endif %}
+                          <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      </div>
+                      <h1 class="text-4xl font-bold text-gray-800 tracking-tight leading-tight hover:text-blue-600 transition-colors duration-300">{{ products.name }}</h1>
+                      <p class="text-xl text-gray-600 leading-relaxed"><span class="font-semibold text-blue-600">Descrição:</span> {{ products.description|linebreaks }}</p>
+                      {% if products.discount %}
+                          <div class="flex items-center gap-3 flex-wrap">
+                              <p class="text-3xl font-bold text-red-600 animate-pulse">R$ {{ products.price_with_discount}}</p>
+                              <p class="text-xl line-through text-gray-400">R$ {{ products.price }}</p>
+                              <span class="bg-red-100 text-red-600 px-4 py-2 rounded-full text-sm font-semibold shadow-md">{{ products.discount }}% OFF</span>
+                          </div>
+                      {% else %}
+                          <p class="text-3xl font-bold text-green-600 hover:text-green-700 transition-colors duration-300">R$ {{ products.price }}</p>
+                      {% endif %}
+                      <section class="overflow-hidden shadow-xl rounded-2xl animate-fade-in hover:shadow-2xl transition-shadow duration-300">
+                          <table class="w-full text-sm text-left">
+                              <thead class="text-sm text-white uppercase bg-gradient-to-r from-blue-600 to-blue-700">
+                                  <tr>
+                                      <th scope="col" class="px-6 py-4 font-bold">Característica</th>
+                                      <th scope="col" class="px-6 py-4 font-bold">Valor</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr class="bg-white border-b hover:bg-blue-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-gray-900">Estoque</th>
+                                      <td class="px-6 py-4">
+                                          {% if products.stock > 0 %}
+                                              <span class="text-green-600 font-medium bg-green-100 px-3 py-1 rounded-full">{{ products.stock }} unidades</span>
+                                          {% else %}
+                                              <span class="text-red-600 font-medium bg-red-100 px-3 py-1 rounded-full">Indisponível</span>
+                                          {% endif %}
+                                      </td>
+                                  </tr>
+                                  <tr class="bg-white border-b hover:bg-blue-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-gray-900">Categoria</th>
+                                      <td class="px-6 py-4"><span class="bg-gray-100 px-3 py-1 rounded-full">{{ products.category|title }}</span></td>
+                                  </tr>
+                                  <tr class="bg-white border-b hover:bg-blue-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-gray-900">Largura</th>
+                                      <td class="px-6 py-4">{{ products.length }} cm</td>
+                                  </tr>
+                                  <tr class="bg-white border-b hover:bg-blue-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-gray-900">Comprimento</th>
+                                      <td class="px-6 py-4">{{ products.height }} cm</td>
+                                  </tr>
+                                  <tr class="bg-white border-b hover:bg-blue-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-gray-900">Peso</th>
+                                      <td class="px-6 py-4">{{ products.weight }} kg</td>
+                                  </tr>
+                                  <tr class="bg-white border-b hover:bg-blue-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-gray-900">Cor</th>
+                                      <td class="px-6 py-4"><span class="bg-gray-100 px-3 py-1 rounded-full">{{ products.color|title }}</span></td>
+                                  </tr>
+                                  <tr class="bg-white border-b hover:bg-blue-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-gray-900">Materiais</th>
+                                      <td class="px-6 py-4"><span class="bg-gray-100 px-3 py-1 rounded-full">{{ products.materials|title }}</span></td>
+                                  </tr>
+                                  {% if products.fragilities %}
+                                  <tr class="bg-white border-b hover:bg-yellow-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-yellow-600">Fragilidades</th>
+                                      <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full">{{ products.fragilities }}</span></td>
+                                  </tr>
+                                  {% endif %}
+                                  {% if products.customer_risk %}
+                                  <tr class="bg-white hover:bg-red-50 transition-colors duration-200">
+                                      <th scope="row" class="px-6 py-4 font-medium text-red-600">Riscos ao Cliente</th>
+                                      <td class="px-6 py-4"><span class="bg-red-100 text-red-600 px-3 py-1 rounded-full">{{ products.customer_risk }}</span></td>
+                                  </tr>
+                                  {% endif %}
+                              </tbody>
+                          </table>
+                      </section>
+
+                      <style>
+                      @keyframes fadeIn {
+                          from { opacity: 0; transform: translateY(20px); }
+                          to { opacity: 1; transform: translateY(0); }
+                      }
+
+                      .animate-fade-in {
+                          animation: fadeIn 0.8s ease-out;
+                      }
+                      </style>
+                  </article>
+                  <article class="flex flex-col justify-end space-y-6">
+                      <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+                          <p class="text-xl font-bold mb-6 text-gray-800">Quantidade:</p>
+                          {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'add_to_cart' products.id %}" class="space-y-6">
+                            {% csrf_token %}
+                              <div class="relative">
+                                  <input type="number" name="quantity" min="1" max="{{ products.stock }}" value="1" 
+                                         class="w-full p-4 text-lg border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
+                                         {% if products.stock == 0 %}disabled{% endif %}>
+                                  <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">unidades</span>
+                              </div>
+                              <input type="hidden" name="product_id" value="{{ products.id }}">
+                              <button type="submit" 
+                                      class="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-lg font-bold rounded-xl shadow-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-500/50 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100" 
+                                      {% if products.stock == 0 %}disabled{% endif %}>
+                                  {% if products.stock > 0 %}
+                                      <span class="flex items-center justify-center gap-2">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                          </svg>
+                                          Adicionar ao carrinho
+                                      </span>
+                                  {% else %}
+                                      <span class="flex items-center justify-center gap-2">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                          </svg>
+                                          Produto Indisponível
+                                      </span>
+                                  {% endif %}
+                              </button>
+                          </form>
+                          {% else %}
+                            <div class="text-center p-4 bg-blue-50 rounded-xl">
+                                <p class="text-blue-600"><a href="{% url 'login' %}?next={{ request.path }}" class="font-medium hover:underline">Faça login</a> para adicionar itens ao carrinho.</p>
+                            </div>
+                          {% endif %}
+                      </div>
+                  </article>
+              </section>
+          </section>
+      </main>
+      {% endblock %}

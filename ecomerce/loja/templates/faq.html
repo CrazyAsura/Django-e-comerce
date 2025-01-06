@@ -1,0 +1,60 @@
+    {% extends 'base.html' %}
+
+    {% block title %}Loja - FAQ{% endblock %}
+
+    {% block content %}
+    <main class="container mx-auto my-52 px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8">Perguntas Frequentes</h1>
+        
+        <section class="space-y-4">
+            <article class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="w-full py-4 px-6 text-left font-semibold focus:outline-none hover:bg-gray-50 transition-colors duration-300" onclick="toggleAnswer(this)">
+                    Como faço um pedido?
+                    <span class="float-right transform transition-transform duration-300">▼</span>
+                </button>
+                <section class="hidden px-6 py-4 bg-gray-50">
+                    <p>Para fazer um pedido, basta navegar pelo nosso catálogo, selecionar os itens desejados e adicioná-los ao carrinho. Depois, siga as instruções de checkout para finalizar sua compra.</p>
+                </section>
+            </article>
+
+            <article class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="w-full py-4 px-6 text-left font-semibold focus:outline-none hover:bg-gray-50 transition-colors duration-300" onclick="toggleAnswer(this)">
+                    Quais são as formas de pagamento aceitas?
+                    <span class="float-right transform transition-transform duration-300">▼</span>
+                </button>
+                <section class="hidden px-6 py-4 bg-gray-50">
+                    <p>Aceitamos cartões de crédito, débito, boleto bancário e PIX. Todas as transações são seguras e criptografadas.</p>
+                </section>
+            </article>
+
+            <article class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="w-full py-4 px-6 text-left font-semibold focus:outline-none hover:bg-gray-50 transition-colors duration-300" onclick="toggleAnswer(this)">
+                    Qual é o prazo de entrega?
+                    <span class="float-right transform transition-transform duration-300">▼</span>
+                </button>
+                <section class="hidden px-6 py-4 bg-gray-50">
+                    <p>O prazo de entrega varia de acordo com a sua localização. Geralmente, entregamos em 3-7 dias úteis para a maioria das regiões do país.</p>
+                </section>
+            </article>
+
+            <article class="bg-white rounded-lg shadow-md overflow-hidden">
+                <button class="w-full py-4 px-6 text-left font-semibold focus:outline-none hover:bg-gray-50 transition-colors duration-300" onclick="toggleAnswer(this)">
+                    Como faço para trocar ou devolver um produto?
+                    <span class="float-right transform transition-transform duration-300">▼</span>
+                </button>
+                <section class="hidden px-6 py-4 bg-gray-50">
+                    <p>Para solicitar uma troca ou devolução, entre em contato com nosso atendimento ao cliente em até 7 dias após o recebimento do produto. Nós forneceremos as instruções necessárias para o processo.</p>
+                </section>
+            </article>
+        </section>
+    </main>
+
+    <script>
+        function toggleAnswer(button) {
+            const answer = button.nextElementSibling;
+            const arrow = button.querySelector('span');
+            answer.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        }
+    </script>
+    {% endblock %}
